@@ -1,3 +1,9 @@
+##  Fork for AIArt benchmark
+Howto use:
+
+CUDA_VISIBLE_DEVICES=3 python train.py --name vit_sd_blur_jpg_prob0.1 --blur_prob 0.1 --blur_sig 0.0,3.0 --jpg_prob 0.1 --jpg_method cv2,pil --jpg_qual 30,100 --dataroot ~/workspace/datasets/aiart/output2/sd  --classes '' --arch vit
+
+
 ## Detecting CNN-Generated Images [[Project Page]](https://peterwang512.github.io/CNNDetection/)
 
 **CNN-generated images are surprisingly easy to spot...for now**  
