@@ -13,12 +13,26 @@ class Trainer(BaseModel):
         super(Trainer, self).__init__(opt)
 
         if self.isTrain and not opt.continue_train:
-            self.model = resnet50(pretrained=True)
-            self.model.fc = nn.Linear(2048, 1)
-            torch.nn.init.normal_(self.model.fc.weight.data, 0.0, opt.init_gain)
+            if opt.arch == 'res50':
+                self.model = resnet50(pretrained=True)
+                self.model.fc = nn.Linear(2048, 1)
+                torch.nn.init.normal_(self.model.fc.weight.data, 0.0, opt.init_gain)
+            elif opt.arch == 'vit':
+                from networks.vit import vit_base_patch16_224
+                self.model = vit_base_patch16_224(pretrained=True)
+                self.model.fc = nn.Linear(768, 1)
+                torch.nn.init.normal_(self.model.fc.weight.data, 0.0, opt.init_gain)
+            else:
+                exit()
 
         if not self.isTrain or opt.continue_train:
-            self.model = resnet50(num_classes=1)
+            if opt.arch == 'res50':
+                self.model = resnet50(num_classes=1)
+            elif opt.arch == 'vit':
+                from networks.vit import vit_base_patch16_224
+                self.model = vit_base_patch16_224(pretrained=False, num_classes=1)
+            else:
+                exit()
 
         if self.isTrain:
             self.loss_fn = nn.BCEWithLogitsLoss()
